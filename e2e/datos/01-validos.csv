@@ -1,0 +1,3 @@
+id_asesor;nombre_asesor;equipo_entidad;compania;correo_contacto;celular_contacto;rol_asesor;observaciones;fecha_novedad;usuario
+1216722322;Ana Pérez;Ventas;ABC S.A.S.;ana@example.com;3123456789;Asesora;Ingreso nuevo;2024-01-15;admin
+1216722323;Luis Gómez;Soporte;ABC S.A.S.;;;Líder;;2024-02-01;admin

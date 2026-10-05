@@ -1,0 +1,20 @@
+# Sobrescritura de docker-compose.yml para la prueba E2E (docs/14-prueba-e2e-con-docker.md).
+# Conecta el servidor al contenedor local "datadock-sql" en lugar de a la base de server/.env.
+# Las variables de "environment" tienen prioridad sobre las de env_file.
+#
+# Uso, desde la raíz del repositorio:
+#   docker compose -f docker-compose.yml -f e2e/docker-compose.e2e.yml up --build -d
+#
+# Credenciales SOLO para el contenedor local de pruebas. Nunca uses estos valores en otro entorno.
+services:
+  server:
+    environment:
+      - DB_SERVER=host.docker.internal
+      - DB_PORT=${E2E_SQL_PORT:-1433}
+      - DB_NAME=datadock
+      - DB_USER=sa
+      - DB_PASS=${E2E_SA_PASSWORD:-Cambiar.Esto123}
+      - DB_ENCRYPT=false
+      - DB_TRUST_SERVER_CERT=true
+      # Incluye :8080 por si el puerto 80 está ocupado y el cliente se publica en otro puerto
+      - CORS_ORIGIN=http://localhost,http://localhost:8080
