@@ -1,0 +1,137 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.date-range-picker {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+}
+
+.date-range-picker__label {
+  margin-bottom: 0.35rem;
+  color: #374151;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.date-range-picker__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.date-range-picker__fields label {
+  display: grid;
+  gap: 0.25rem;
+  color: #6b7280;
+  font-size: 0.7rem;
+}
+
+.date-range-picker__fields input {
+  min-width: 0;
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  color: #374151;
+  background: #fff;
+}
+
+.date-range-picker__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+
+.date-range-picker__presets button {
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  padding: 0.25rem 0.625rem;
+  color: #374151;
+  background: #fff;
+  font-size: 0.7rem;
+}
+
+.date-range-picker__presets button:hover {
+  border-color: #16a34a;
+  color: #15803d;
+}
+
+.data-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.data-table th {
+  color: #374151;
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.data-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.pagination-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  margin-top: 1rem;
+}
+
+.pagination-controls button {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  color: #374151;
+  background: #fff;
+  font-size: 0.75rem;
+}
+
+.pagination-controls button:hover:not(:disabled),
+.pagination-controls button.active {
+  border-color: #16a34a;
+  color: #fff;
+  background: #16a34a;
+}
+
+.pagination-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+@media (max-width: 640px) {
+  .date-range-picker__fields {
+    grid-template-columns: 1fr;
+  }
+
+  .data-table {
+    min-width: 36rem;
+  }
+}
