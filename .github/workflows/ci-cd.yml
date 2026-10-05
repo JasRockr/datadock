@@ -1,0 +1,97 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  validate:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            client/package-lock.json
+            server/package-lock.json
+          
+      - name: Install dependencies
+        run: npm run ci-all
+        
+      - name: Lint code
+        run: npm run lint
+        
+      - name: Run tests
+        run: npm run test
+  
+  build:
+    name: Build
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            client/package-lock.json
+            server/package-lock.json
+          
+      - name: Install dependencies
+        run: npm run ci-all
+        
+      - name: Build packages
+        run: npm run build
+        env:
+          # URL pública de la API que se incrusta en el cliente al compilar.
+          # Definirla en GitHub: Settings → Secrets and variables → Actions → Variables
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+        
+      - name: Upload client build
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-build
+          path: client/dist
+          
+      - name: Upload server build
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-build
+          path: server/dist
+          
+  deploy-client:
+    name: Deploy Client
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download client build
+        uses: actions/download-artifact@v4
+        with:
+          name: client-build
+          path: client/dist
+          
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: './client/dist'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
